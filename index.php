@@ -11,6 +11,10 @@ use app\model\Database;
     $name = $user->getName();
     echo "User's name: $name <br>";
 
+    WebApp::$logger::writeMessage("Elso WebUzenet");
+    WebApp::$logger::writeMessage("Masodik WebUzenet");
+    WebApp::$logger::writeMessage("Harmadik WebUzenet");
+
     $app->router->addRoute('/', "get", function (){
         echo "Anonym function from index.php";
     });

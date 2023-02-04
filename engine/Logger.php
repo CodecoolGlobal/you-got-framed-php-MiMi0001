@@ -5,11 +5,10 @@ namespace app\engine;
 class Logger
 {
     private static $logFile;
-    public function __construct(string $configFileName)
+    public function __construct()
     {
-        $json = $this->getConfigFile($configFileName);
-        $logFileName = $json["logfile"];
-        $baseDir = WebApp::getBaseDirectory();
+        $logFileName = WebApp::$appConfig["logfile"];
+        $baseDir = WebApp::$baseDirectory;
 
         self::$logFile = fopen("$baseDir/$logFileName", 'a');
     }
@@ -22,14 +21,6 @@ class Logger
     public static function writeMessage(string $message){
         $timestamp = date('Y/m/d h:i:s', time());
         $log = "<Timestamp: $timestamp> <Log: $message>\n";
-        fwrite(self::$logFile, $log);
+        $res = fwrite(self::$logFile, $log, strlen($log));
     }
-
-    private function getConfigFile(string $configFileName) {
-        $baseDir = WebApp::getBaseDirectory();
-        $jsonString = file_get_contents("$baseDir/$configFileName");
-        $json = json_decode($jsonString, true);
-        return $json;
-    }
-
 }

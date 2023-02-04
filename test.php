@@ -4,7 +4,6 @@ require_once __DIR__ .'/vendor/autoload.php';
 use app\engine\WebApp;
 use app\model\Database;
 
-echo __DIR__;
 $app = new WebApp(__DIR__, "config.json");
 
 $user = WebApp::$userQueryRepository::getUserById(2);
