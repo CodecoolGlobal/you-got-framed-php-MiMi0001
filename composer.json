@@ -1,0 +1,19 @@
+{
+    "name": "mimi/you-got-framed",
+    "type": "project",
+    "authors": [
+        {
+            "name": "MiMi0001",
+            "email": "willijiem@gmail.com"
+        }
+    ],
+    "autoload": {
+        "psr-4": {
+            "app\\" : "./"
+        }
+    },
+    "require": {
+      "ext-pdo": "*",
+      "ext-json": "*"
+    }
+}

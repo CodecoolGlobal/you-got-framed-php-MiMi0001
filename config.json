@@ -1,0 +1,9 @@
+{
+  "database": {
+    "host" : "127.0.0.1",
+    "dbname" : "you_got_framed_test",
+    "user" : "mimi",
+    "password" : "vmimif"
+  },
+  "logfile": "log.txt"
+}
