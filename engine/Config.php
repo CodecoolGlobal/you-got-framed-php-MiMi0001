@@ -4,17 +4,22 @@ namespace app\engine;
 
 class Config
 {
-    private static string $configFileName;
+    private string $configFileName;
+    const CONFIG_FILE_NAME = "config.json";
 
-    public function __construct(string $configFileName)
+    public function __construct()
     {
-        self::$configFileName = $configFileName;
     }
 
-    public static function getConfig() {
-        $baseDir = WebApp::getBaseDirectory();
-        $configFileName = self::$configFileName;
-        $jsonString = file_get_contents("$baseDir/$configFileName");
+    public function getConfig() {
+        $baseDir = dirname(__DIR__, 1);
+        $jsonString = file_get_contents("$baseDir/".self::CONFIG_FILE_NAME);
+        return json_decode($jsonString, true);
+    }
+
+    public static function getConfigStat() {
+        $baseDir = dirname(__DIR__, 1);
+        $jsonString = file_get_contents("$baseDir/".self::CONFIG_FILE_NAME);
         return json_decode($jsonString, true);
     }
 }

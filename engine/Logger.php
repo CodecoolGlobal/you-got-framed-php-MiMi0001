@@ -4,23 +4,22 @@ namespace app\engine;
 
 class Logger
 {
-    private static $logFile;
+    private $logFile;
     public function __construct()
     {
-        $logFileName = WebApp::$appConfig["logfile"];
-        $baseDir = WebApp::$baseDirectory;
+        $logFileName = Config::getConfigStat()["logfile"];;
+        $baseDir = __DIR__;
 
-        self::$logFile = fopen("$baseDir/$logFileName", 'a');
+        $this->logFile = fopen("$baseDir/$logFileName", 'a');
     }
 
     public function __destruct(){
-        fclose(self::$logFile);
-        echo "\nLog file closed.";
+        fclose($this->logFile);
     }
 
-    public static function writeMessage(string $message){
+    public function writeMessage(string $message){
         $timestamp = date('Y/m/d h:i:s', time());
         $log = "<Timestamp: $timestamp> <Log: $message>\n";
-        $res = fwrite(self::$logFile, $log, strlen($log));
+        $res = fwrite($this->logFile, $log, strlen($log));
     }
 }

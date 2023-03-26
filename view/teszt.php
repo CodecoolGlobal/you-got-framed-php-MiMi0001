@@ -1,3 +1,3 @@
 <?php
-echo "It's the teszt view file here!";
+echo "It's the test view file here!";
 

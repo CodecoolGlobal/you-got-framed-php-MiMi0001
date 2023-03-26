@@ -1,37 +1,69 @@
 <?php
 namespace app\engine;
+
 use app\model\Database;
-use app\model\UserQueryRepository;
+use app\model\QueryRepository;
+use \eftec\bladeone\BladeOne;
+
 
 class WebApp {
+    private static bool $instanceExist = false;
+    private static WebApp $instance;
     public Router $router;
-    public static \PDO $pdo;
-    public static Logger $logger;
-    public static UserQueryRepository $userQueryRepository;
-    public static $appConfig;
-    public static string $baseDirectory;
+    public \PDO $pdo;
+    public Logger $logger;
+    public QueryRepository $queryRepository;
+    public Request $request;
+    public PropertyHandler $propertyHandler;
+    public BladeOne $bladeOne;
+    private $appConfig;
+    const BLADE_ONE_MODE = BladeOne::MODE_DEBUG;
 
-    public function __construct(string $BaseDirectory, string $configFileName) {
-        $this->router = new Router();
 
-        self::$baseDirectory = $BaseDirectory;
+    private function __construct() {
+            $this->router = new Router();
 
-        $config = new Config($configFileName);
-        self::$appConfig = Config::getConfig();
+            $config = new Config();
+            $this->appConfig = $config->getConfig();
 
-        $db = new Database($configFileName);
-        self::$pdo = Database::$pdo;
+            $db = new Database();
+            $this->pdo = $db->getPdo();
 
-        self::$logger = new Logger($configFileName);
+            $this->logger = new Logger();
 
-        self::$userQueryRepository = new UserQueryRepository();;
+            $this->queryRepository = new QueryRepository();
+
+            $this->request = new Request();
+
+            $this->propertyHandler = new PropertyHandler();
+
+            $views = dirname(__DIR__, 1) . '/views';
+            $cache = dirname(__DIR__, 1) . '/cache';
+            $this->bladeOne = new BladeOne($views, $cache, self::BLADE_ONE_MODE);
     }
 
-    public static function getBaseDirectory(): string {
-        return self::$baseDirectory;
+    public static function getInstance(): ?WebApp {
+        if (!self::$instanceExist) {
+            self::$instanceExist = true;
+            self::$instance = new WebApp();
+            return self::$instance;
+        }
+        return self::$instance;
     }
 
     public function run() {
         $this->router->resolve();
     }
+
+    /**
+     * @return mixed
+     */
+    public function getAppConfig()
+    {
+        return $this->appConfig;
+    }
+
+    /**
+     * @return mixed
+     */
 }

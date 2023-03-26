@@ -7,9 +7,12 @@ use app\model\Database;
 
     $app = new WebApp(__DIR__, "config.json");
 
-    $user = WebApp::$userQueryRepository::getUserById(2);
+    $user = WebApp::$userQueryRepository::getUserById(8);
     $name = $user->getName();
     echo "User's name: $name <br>";
+
+    $email = WebApp::$userQuery::getST(8, "email");
+    echo "User's email address: $email <br>";
 
     WebApp::$logger::writeMessage("Elso WebUzenet");
     WebApp::$logger::writeMessage("Masodik WebUzenet");
